@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>NeptuneYT&#39;s Blog</title>
+  
+  <subtitle>I think, therefore I am.</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://yoursite.com/"/>
+  <updated>2019-03-12T13:55:39.948Z</updated>
+  <id>http://yoursite.com/</id>
+  
+  <author>
+    <name>neptuneyt</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>myFirstBlog</title>
+    <link href="http://yoursite.com/2019/03/12/myFirstBlog/"/>
+    <id>http://yoursite.com/2019/03/12/myFirstBlog/</id>
+    <published>2019-03-12T13:55:39.000Z</published>
+    <updated>2019-03-12T13:55:39.948Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://yoursite.com/2019/03/12/test/"/>
+    <id>http://yoursite.com/2019/03/12/test/</id>
+    <published>2019-03-12T11:58:57.112Z</published>
+    <updated>2019-03-12T11:58:57.113Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="awk版本"><a href="#awk版本" class="headerlink" title="awk版本"></a>awk版本</h2><pre><code>$ awk --version</code></pre><p>GNU Awk 4.0.2<br>Copyright (C) 1989, 1991-2012 Free Software Foundation.</p><pre><code>$ cat test.txt</code></pre><p>1e2<br>1e-2<br>1e-10<br>1e-20<br>2e-10</p><pre><code>$ awk &apos;$1&lt;1e-10&apos; test.txt</code></pre><p>1e-20</p><pre><code>$ awk &apos;$1&gt;1e-4&apos; test.txt</code></pre><p>1e2<br>1e-2</p><pre><code>$ awk &apos;$1&gt;0.01&apos; test.txt</code></pre><p>1e2</p><h2 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h2><pre><code>$ sort -g  test.txt</code></pre><p>1e-20<br>1e-10<br>2e-10<br>1e-2<br>1e2</p><pre><code>$ sort -gr  test.txt</code></pre><p>1e2<br>1e-2<br>2e-10<br>1e-10<br>1e-20</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;awk版本&quot;&gt;&lt;a href=&quot;#awk版本&quot; class=&quot;headerlink&quot; title=&quot;awk版本&quot;&gt;&lt;/a&gt;awk版本&lt;/h2&gt;&lt;pre&gt;&lt;code&gt;$ awk --version
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;GNU Awk 4.0.2&lt;br&gt;C
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="http://yoursite.com/2019/03/12/hello-world/"/>
+    <id>http://yoursite.com/2019/03/12/hello-world/</id>
+    <published>2019-03-12T07:24:37.208Z</published>
+    <updated>2019-03-12T07:24:37.209Z</updated>
+    
+    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+</feed>
