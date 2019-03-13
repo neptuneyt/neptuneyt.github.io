@@ -1,210 +1,138 @@
-/*! echo-js v1.7.3 | (c) 2016 @toddmotto | https://github.com/toddmotto/echo */
-(function(root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    define(function() {
-      return factory(root);
+// Dean Attali / Beautiful Jekyll 2016
+
+var main = {
+
+  bigImgEl : null,
+  numImgs : null,
+
+  init : function() {
+    // Shorten the navbar after scrolling a little bit down
+    $(window).scroll(function() {
+        if ($(".navbar").offset().top > 50) {
+            $(".navbar").addClass("top-nav-short");
+        } else {
+            $(".navbar").removeClass("top-nav-short");
+        }
     });
-  } else if (typeof exports === 'object') {
-    module.exports = factory;
-  } else {
-    root.echo = factory(root);
-  }
-})(this, function(root) {
-
-  'use strict';
-
-  var echo = {};
-
-  var callback = function() {};
-
-  var offset, poll, delay, useDebounce, unload;
-
-  var isHidden = function(element) {
-    return (element.offsetParent === null);
-  };
-
-  var inView = function(element, view) {
-    if (isHidden(element)) {
-      return false;
-    }
-
-    var box = element.getBoundingClientRect();
-    return (box.right >= view.l && box.bottom >= view.t && box.left <= view.r && box.top <= view.b);
-  };
-
-  var debounceOrThrottle = function() {
-    if (!useDebounce && !!poll) {
-      return;
-    }
-    clearTimeout(poll);
-    poll = setTimeout(function() {
-      echo.render();
-      poll = null;
-    }, delay);
-  };
-
-  echo.init = function(opts) {
-    opts = opts || {};
-    var offsetAll = opts.offset || 0;
-    var offsetVertical = opts.offsetVertical || offsetAll;
-    var offsetHorizontal = opts.offsetHorizontal || offsetAll;
-    var optionToInt = function(opt, fallback) {
-      return parseInt(opt || fallback, 10);
-    };
-    offset = {
-      t: optionToInt(opts.offsetTop, offsetVertical),
-      b: optionToInt(opts.offsetBottom, offsetVertical),
-      l: optionToInt(opts.offsetLeft, offsetHorizontal),
-      r: optionToInt(opts.offsetRight, offsetHorizontal)
-    };
-    delay = optionToInt(opts.throttle, 250);
-    useDebounce = opts.debounce !== false;
-    unload = !!opts.unload;
-    callback = opts.callback || callback;
-    echo.render();
-    if (document.addEventListener) {
-      root.addEventListener('scroll', debounceOrThrottle, false);
-      root.addEventListener('load', debounceOrThrottle, false);
-    } else {
-      root.attachEvent('onscroll', debounceOrThrottle);
-      root.attachEvent('onload', debounceOrThrottle);
-    }
-  };
-
-  echo.render = function() {
-    var nodes = document.querySelectorAll('img[data-echo], [data-echo-background]');
-    var length = nodes.length;
-    var src, elem;
-    var view = {
-      l: 0 - offset.l,
-      t: 0 - offset.t,
-      b: (root.innerHeight || document.documentElement.clientHeight) + offset.b,
-      r: (root.innerWidth || document.documentElement.clientWidth) + offset.r
-    };
-    for (var i = 0; i < length; i++) {
-      elem = nodes[i];
-      if (inView(elem, view)) {
-
-        if (unload) {
-          elem.setAttribute('data-echo-placeholder', elem.src);
-        }
-
-        if (elem.getAttribute('data-echo-background') !== null) {
-          elem.style.backgroundImage = "url(" + elem.getAttribute('data-echo-background') + ")";
-        } else {
-          elem.src = elem.getAttribute('data-echo');
-        }
-
-        if (!unload) {
-          elem.removeAttribute('data-echo');
-          elem.removeAttribute('data-echo-background');
-        }
-
-        callback(elem, 'load');
-      } else if (unload && !!(src = elem.getAttribute('data-echo-placeholder'))) {
-
-        if (elem.getAttribute('data-echo-background') !== null) {
-          elem.style.backgroundImage = "url(" + src + ")";
-        } else {
-          elem.src = src;
-        }
-
-        elem.removeAttribute('data-echo-placeholder');
-        callback(elem, 'unload');
-      }
-    }
-    if (!length) {
-      echo.detach();
-    }
-  };
-
-  echo.detach = function() {
-    if (document.removeEventListener) {
-      root.removeEventListener('scroll', debounceOrThrottle);
-    } else {
-      root.detachEvent('onscroll', debounceOrThrottle);
-    }
-    clearTimeout(poll);
-  };
-
-  return echo;
-
-});
-function deepCopy(c, p) {
-　var c = c || {};
-　for (var i in p) {
-　　if (typeof p[i] === 'object') {
-　　　c[i] = (p[i].constructor === Array) ? [] : {};
-　　　deepCopy(p[i], c[i]);
-　　} else {
-　　　c[i] = p[i];
-　　}
-　}
-　return c;
-}
-/**
- * 网站js
- * @author Jelon
- * @type {{init, toggleMenu}}
- */
-var JELON = window.JELON || {};
-JELON = deepCopy(JELON, {
-  name: 'JELON',
-  version: '0.0.2',
-  init: function() {
-    this.toggleMenu();
-    this.backToTop();
-
-    echo.init({
-      offset: 50,
-      throttle: 250,
-      unload: false,
-      callback: function(element, op) {
-        console.log(element, 'has been', op + 'ed')
-      }
+    
+    // On mobile, hide the avatar when expanding the navbar menu
+    $('#main-navbar').on('show.bs.collapse', function () {
+      $(".navbar").addClass("top-nav-expanded");
     });
-  },
-  $: function(str) {
-    return /^(\[object HTML)[a-zA-Z]*(Element\])$/.test(Object.prototype.toString.call(str)) ? str : document.getElementById(str);
-  },
-  toggleMenu: function() {
-    var _this = this,
-      $menu = _this.$(_this.name + '__menu');
-    _this.$(_this.name + '__btnDropNav').onclick = function() {
-      if ($menu.className.indexOf('hidden') === -1) {
-        $menu.className += ' hidden';
-      } else {
-        $menu.className = $menu.className.replace(/\s*hidden\s*/, '');
-      }
-
-    };
-  },
-  backToTop: function() {
-    var _this = this;
-    if (typeof _this.$(_this.name + '__backToTop') === 'undefined') return;
-    window.onscroll = window.onresize = function() {
-      if (document.documentElement.scrollTop + document.body.scrollTop > 0) {
-        _this.$(_this.name + '__backToTop').style.display = 'block';
-      } else {
-        _this.$(_this.name + '__backToTop').style.display = 'none';
-      }
-    };
-    _this.$(_this.name + '__backToTop').onclick = function() {
-      var Timer = setInterval(GoTop, 10);
-
-      function GoTop() {
-        if (document.documentElement.scrollTop + document.body.scrollTop < 1) {
-          clearInterval(Timer)
+    $('#main-navbar').on('hidden.bs.collapse', function () {
+      $(".navbar").removeClass("top-nav-expanded");
+    });
+	
+    // On mobile, when clicking on a multi-level navbar menu, show the child links
+    $('#main-navbar').on("click", ".navlinks-parent", function(e) {
+      var target = e.target;
+      $.each($(".navlinks-parent"), function(key, value) {
+        if (value == target) {
+          $(value).parent().toggleClass("show-children");
         } else {
-          document.documentElement.scrollTop /= 1.1;
-          document.body.scrollTop /= 1.1
+          $(value).parent().removeClass("show-children");
         }
-      }
-    };
-  }
-});
+      });
+    });
+    
+    // Ensure nested navbar menus are not longer than the menu header
+    var menus = $(".navlinks-container");
+    if (menus.length > 0) {
+      var navbar = $("#main-navbar ul");
+      var fakeMenuHtml = "<li class='fake-menu' style='display:none;'><a></a></li>";
+      navbar.append(fakeMenuHtml);
+      var fakeMenu = $(".fake-menu");
 
-/**
- * 程序入口
- */
-JELON.init();
+      $.each(menus, function(i) {
+        var parent = $(menus[i]).find(".navlinks-parent");
+        var children = $(menus[i]).find(".navlinks-children a");
+        var words = [];
+        $.each(children, function(idx, el) { words = words.concat($(el).text().trim().split(/\s+/)); });
+        var maxwidth = 0;
+        $.each(words, function(id, word) {
+          fakeMenu.html("<a>" + word + "</a>");
+          var width =  fakeMenu.width();
+          if (width > maxwidth) {
+            maxwidth = width;
+          }
+        });
+        $(menus[i]).css('min-width', maxwidth + 'px')
+      });
+
+      fakeMenu.remove();
+    }        
+    
+    // show the big header image	
+    main.initImgs();
+  },
+  
+  initImgs : function() {
+    // If the page was large images to randomly select from, choose an image
+    if ($("#header-big-imgs").length > 0) {
+      main.bigImgEl = $("#header-big-imgs");
+      main.numImgs = main.bigImgEl.attr("data-num-img");
+
+          // 2fc73a3a967e97599c9763d05e564189
+	  // set an initial image
+	  var imgInfo = main.getImgInfo();
+	  var src = imgInfo.src;
+	  var desc = imgInfo.desc;
+  	  main.setImg(src, desc);
+  	
+	  // For better UX, prefetch the next image so that it will already be loaded when we want to show it
+  	  var getNextImg = function() {
+	    var imgInfo = main.getImgInfo();
+	    var src = imgInfo.src;
+	    var desc = imgInfo.desc;		  
+	    
+		var prefetchImg = new Image();
+  		prefetchImg.src = src;
+		// if I want to do something once the image is ready: `prefetchImg.onload = function(){}`
+		
+  		setTimeout(function(){
+                  var img = $("<div></div>").addClass("big-img-transition").css("background-image", 'url(' + src + ')');
+  		  $(".intro-header.big-img").prepend(img);
+  		  setTimeout(function(){ img.css("opacity", "1"); }, 50);
+		  
+		  // after the animation of fading in the new image is done, prefetch the next one
+  		  //img.one("transitioned webkitTransitionEnd oTransitionEnd MSTransitionEnd", function(){
+		  setTimeout(function() {
+		    main.setImg(src, desc);
+			img.remove();
+  			getNextImg();
+		  }, 1000); 
+  		  //});		
+  		}, 6000);
+  	  };
+	  
+	  // If there are multiple images, cycle through them
+	  if (main.numImgs > 1) {
+  	    getNextImg();
+	  }
+    }
+  },
+  
+  getImgInfo : function() {
+  	var randNum = Math.floor((Math.random() * main.numImgs) + 1);
+    var src = main.bigImgEl.attr("data-img-src-" + randNum);
+	var desc = main.bigImgEl.attr("data-img-desc-" + randNum);
+	
+	return {
+	  src : src,
+	  desc : desc
+	}
+  },
+  
+  setImg : function(src, desc) {
+	$(".intro-header.big-img").css("background-image", 'url(' + src + ')');
+	if (typeof desc !== typeof undefined && desc !== false) {
+	  $(".img-desc").text(desc).show();
+	} else {
+	  $(".img-desc").hide();  
+	}
+  }
+};
+
+// 2fc73a3a967e97599c9763d05e564189
+
+document.addEventListener('DOMContentLoaded', main.init);
