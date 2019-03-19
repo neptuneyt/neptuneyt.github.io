@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.8.0"><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><meta name="author" content="neptuneyt"><link rel="icon" href="/hexo.png"><title>NeptuneYT's Blog</title><meta name="description"><link rel="alternate" type="application/rss+xml" title="NeptuneYT's Blog" href="/atom.xml"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/css/highlight.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class="container-fluid"><div class="navbar-header"><button type="button" data-toggle="collapse" data-target="#main-navbar" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="/" class="navbar-brand">NeptuneYT's Blog</a></div><div id="main-navbar" class="collapse navbar-collapse"><ul class="nav navbar-nav navbar-right"><li><a href="/archives">Archive</a></li><li><a href="https://github.com/twoyao/beautiful-hexo">Github</a></li><li><a href="/about/">About</a></li><li><a href="/tags">Tags</a></li></ul></div><div class="avatar-container"><div class="avatar-img-border"><a href="/"><img src="/hexo.png" class="avatar-img"></a></div></div></div></nav><header class="header-section"><div class="intro-header no-img"><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class="post-heading"><h1>Date with Bioawk</h1><p class="post-meta">Posted on Mar 16 2019 · <a href="/tags/bioawk-bioinformatics/" class="tag post-meta">bioawk bioinformatics</a></p></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><article role="main" class="blog-post"><h1 id="废话"><a href="#废话" class="headerlink" title="废话"></a>废话</h1><p>这是生平第一篇blog，因此难免要说点废话，所以前戏，啊不对，前言就叫废话吧。git+hexo搭建的平台杠杠的，感谢师弟MingLian小大佬成功带入写blog的坑。第一篇就拿生信李恒大神的神作bioawk镇楼吧！</p>
+<h1 id="bioawk简介"><a href="#bioawk简介" class="headerlink" title="bioawk简介"></a>bioawk简介</h1><p>除了鼎鼎大名的BWA、samtools等，李恒大神应群众呼声又做了出于awk又胜于awk的bioawk供广大生信猿们玩耍。bioawk是用C写的，用法和awk基本一样。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="分步安装"><a href="#分步安装" class="headerlink" title="分步安装"></a>分步安装</h3><pre><code>$ sudo apt-get install byacc git    #安装git
+$ git clone git://github.com/lh3/bioawk.git  #默认安装在当前目录
+git clone git://github.com/lh3/bioawk.git ${path}/bioawk #若加path则必须为空，因此可在想要安装的目录下起一个新名称，git会clone到其下
+$ cd bioawk
+$ make
+$ echo &quot;export PATH=${path}/bioawk/:\${PATH}&quot; &gt;&gt; ~/.bashrc  
+$ .  ~/.bashrc 
+</code></pre><h3 id="一步安装脚本"><a href="#一步安装脚本" class="headerlink" title="一步安装脚本"></a>一步安装脚本</h3><pre><code>#!/bin/bash
+read -p  &apos;Input installed  path: &apos; tmp_path
+path=${tmp_path/\//}
+if [ ! -d &quot;${path}&quot; ];then echo &quot;No such file:${path}&quot; &amp;&amp; exit ;fi
+git clone git://github.com/lh3/bioawk.git ${path}/bioawk &amp;&amp; \
+cd ${path}/bioawk &amp;&amp; make &amp;&amp; \
+echo &quot;export PATH=${path}/bioawk/:\${PATH}&quot; &gt;&gt; ~/.bashrc  &amp;&amp; .  ~/.bashrc &amp;&amp; \
+echo &apos;Successfully install bioawk!&apos; || echo &apos;Failed install bioawk&apos;
+</code></pre><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>bioawk基本思想是把组成不同类型的文件（sam、bam、fasta、fastq、vcf etc）的基本元素封装成变量，直接调用即可。</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><pre><code>usage: bioawk [-F fs] [-v var=value] [-c fmt] [-tH] [-f progfile | &apos;prog&apos;] [file ...]
+</code></pre><p>-c 支持输入文件格式，查看帮助：</p>
+<pre><code>bioawk -c -h
+</code></pre><p>bed:<br>        1:chrom 2:start 3:end 4:name 5:score 6:strand 7:thickstart 8:thickend 9:rgb 10:blockcount 11:blocksizes 12:blockstarts<br>sam:<br>        1:qname 2:flag 3:rname 4:pos 5:mapq 6:cigar 7:rnext 8:pnext 9:tlen 10:seq 11:qual<br>vcf:<br>        1:chrom 2:pos 3:id 4:ref 5:alt 6:qual 7:filter 8:info<br>gff:<br>        1:seqname 2:source 3:feature 4:start 5:end 6:score 7:strand 8:frame 9:attribute<br>fastx:<br>        1:name 2:seq 3:qual 4:comment<br><strong>上面出现的名称即可引用其变量</strong></p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><ul>
+<li><p>打印fasta序列ID、序列、长度、GC含量</p>
+<pre><code>bioawk -cfastx &apos;{print &quot;ID: &quot;$name&quot;\tlength: &quot;length($seq)&quot;\tGC: &quot;gc($seq)&quot;\t&quot;$seq}&apos; demo.fa
+</code></pre></li>
+</ul>
+<p>结果:<br>    ID: g1  length: 18      GC: 0.722222    atcccccccccccccttt<br>    ID: g2  length: 26      GC: 0.0769231   cattatatcttatttttttttttttt<br>    ID: g3  length: 48      GC: 0.229167    acccccccccctttttttttttttcatttttttttttttttttttttt<br>原始文件：<br>    &gt;g1<br>    atcccccccccccccttt<br>    &gt;g2 enzyme<br>    cattatatcttatttttttttttttt<br>    &gt;g3<br>    accccccccccttttttttttttt<br>    catttttttttttttttttttttt<br>注意：<br><strong>可以看到bioawk在提取ID的时候只提取了空格分隔后的第一个字段，默认输出域分割符是\t</strong></p>
+<ul>
+<li><p>输出反向互补序列</p>
+<pre><code>bioawk -cfastx &apos;{print $name,$seq,revcomp($seq)}&apos; demo.fa
+</code></pre><p>结果：<br>   g1      atcccccccccccccttt      aaagggggggggggggat<br>  g2      cattatatcttatttttttttttttt      aaaaaaaaaaaaaataagatataatg<br>  g3      acccccccccctttttttttttttcatttttttttttttttttttttt        aaaaaaaaaaaaaaaaaaaaaatgaaaaaaaaaaaaaggggggggggt</p>
+</li>
+<li><p>根据序列ID提取序列，这个是最爱的功能</p>
+<pre><code>bioawk -cfastx &apos;BEGIN{while((getline k &lt;&quot;id.txt&quot;)&gt;0)i[k]=1}{if(i[$name])print &quot;&gt;&quot;$name&quot;\n&quot;$seq}&apos; demo.fa  
+</code></pre></li>
+</ul>
+<p>id.txt:<br>     g1<br>    g2<br>    g2 enzyme<br>    &gt;g3</p>
+<p>结果：<br>    &gt;g1<br>    atcccccccccccccttt<br>    &gt;g2<br>    cattatatcttatttttttttttttt<br>注意：id.txt 需要去掉&gt;</p>
+<ul>
+<li>当然还有其他的花样，大家自己去探索吧</li>
+</ul>
+<h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://github.com/lh3/bioawk" target="_blank" rel="noopener">https://github.com/lh3/bioawk</a></p>
+</article><ul class="pager blog-pager"></ul><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script src="//img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"> </script><script>var cloudTieConfig = {
+  url: document.location.href, 
+  sourceId: "",
+  productKey: "64d7f0abf9224be3bfdcc6cfb9b83fcf",
+  target: "cloud-tie-wrapper"
+};</script></div></div></div><footer><div class="container beautiful-jekyll-footer"><div class="row"><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href="http://weibo.com/bisyao?is_all=1" title="Weibo"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-weibo"></i></span></a></li><li><a href="https://github.com/twoyao" title="GitHub"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-github"></i></span></a></li><li><a href="/atom.xml" title="RSS"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-rss"></i></span></a></li><li><a href="https://twitter.com/twoyao_" title="Twitter"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-twitter"></i></span></a></li><li><a href="mailto:bisyao@gmail.com" title="Email me"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-stack-1x fa-inverse fa-envelope"></i></span></a></li></ul><p class="copyright text-muted">© neptuneyt • 2019 • <a href="mailto:undefined"></a>
+</p><p class="theme-by text-muted">Theme by
+<a href="https://github.com/twoyao/beautiful-hexo">beautiful-hexo</a></p></div></div></div></footer><script src="//cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script><script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script><script src="/js/main.js"></script><script src="//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script><script>hljs.initHighlightingOnLoad();</script></body></html>
