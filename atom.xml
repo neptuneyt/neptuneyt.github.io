@@ -60,20 +60,6 @@
   </entry>
   
   <entry>
-    <title>myFirstBlog</title>
-    <link href="http://yoursite.com/2019/03/12/myFirstBlog/"/>
-    <id>http://yoursite.com/2019/03/12/myFirstBlog/</id>
-    <published>2019-03-12T13:55:39.000Z</published>
-    <updated>2019-03-12T13:55:39.948Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
     <title></title>
     <link href="http://yoursite.com/2019/03/12/test/"/>
     <id>http://yoursite.com/2019/03/12/test/</id>
