@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/PDC-group/index.html</loc>
+    
+    <lastmod>2019-03-27T12:11:34.919Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/03/27/Machine-learning-KFC/</loc>
     
     <lastmod>2019-03-27T12:09:02.672Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://yoursite.com/Tags/index.html</loc>
     
     <lastmod>2019-03-23T14:13:34.171Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/PDC-group/index.html</loc>
-    
-    <lastmod>2019-03-22T09:13:25.697Z</lastmod>
     
   </url>
   
